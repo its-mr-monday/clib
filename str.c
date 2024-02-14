@@ -135,7 +135,7 @@ void str_set(String* str, int index, char c) {
 		list_append(str->list, (void*)ch);
 		return;
 	}
-	list_set(str->list, index, (void*)ch);
+	list_set(str->list, (void*)ch, index);
 }
 
 void str_insert(String* str, int index, char c) {
@@ -144,7 +144,7 @@ void str_insert(String* str, int index, char c) {
 	if (str->list == NULL) {
 		str->list = malloc_list();
 	}
-	list_insert(str->list, index, (void*)ch);
+	list_insert(str->list, (void*)ch, index);
 	return;
 }
 
@@ -171,7 +171,7 @@ void str_insert_cstr(String* str, int index, const char* cstr) {
 	while (cstr[i] != '\0') {
 		char * ch = malloc(sizeof(char));
 		*ch = cstr[i];
-		list_insert(str->list, index + i, (void*)ch);
+		list_insert(str->list, (void*)ch, index + i);
 		i++;
 	}
 	return;
