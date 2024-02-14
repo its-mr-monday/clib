@@ -177,6 +177,14 @@ void str_insert_cstr(String* str, int index, const char* cstr) {
 	return;
 }
 
+void str_insert_int(String* str, int index, int i) {
+	//Convert int to char[]
+	//Then insert char[] to str
+	char * cstr = malloc(12);
+	snprintf(cstr, 12, "%d", i);
+	str_insert_cstr(str, index, cstr);
+	free(cstr);
+}
 int str_index_of(String* str, char c) {
 	if (str->list == NULL) {
 		str->list = malloc_list(); //ensure we have something to work with

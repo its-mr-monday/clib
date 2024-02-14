@@ -157,6 +157,11 @@ int recursive_node_print(BinTreeNode * root, String * str, int row) {
 	}
 	//We can now see how many rows are under this one
 	int deep = deepLeft > deepRight ? deepLeft : deepRight;
+	//Depth tells us how many spaces to add
+	string_insert_int(str, 0, root->data);
+	for (int i = 0; i < deep; i++) {
+		string_insert(str, 0, ' ');
+	}
 	
 	return deep;
 	

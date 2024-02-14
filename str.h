@@ -26,6 +26,7 @@ void str_set(String* str, int index, char c);
 void str_insert(String* str, int index, char c);
 void str_insert_str(String* str, int index, String* str2);
 void str_insert_cstr(String* str, int index, const char* cstr);
+void str_insert_int(String* str, int index, int i);
 int str_index_of(String* str, char c);
 int str_index_of_str(String* str, String* str2);
 int str_index_of_cstr(String* str, const char* cstr);
