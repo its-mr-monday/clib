@@ -31,3 +31,31 @@ void example() {
 	free_str(myString);
 }
 ```
+
+## List Example
+```c
+#include "list.h"
+
+//Print handler function since type casting is involved
+void printInt(void * value) {
+	int * valueInt = (int *)value;
+	printf("%d", *valueInt);
+}
+
+void example() {
+	List* myList = malloc_list();
+	//Let's append some numbers (remember they have to be pointers)
+	int *num;
+	for (int i = 0;i < 5;i++) {
+		num = (int *)malloc(sizeof(int));
+		*num = i;
+		list_append(myList, (void*)num);
+	}
+	int listSize = list->size;
+	//Lets print the list
+	printList(list, &printInt);
+	//Now lets free our memory
+	freeList(list);
+}
+
+```

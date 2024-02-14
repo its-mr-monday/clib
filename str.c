@@ -21,10 +21,14 @@ String* str_create(const char* cstr) {
 }
 
 void free_str(String * str) {
-	freeList(str->list);
-	free(str);
-}
+	if (str->list != NULL) {
+		freeList(str->list);
+	}
+	if (str != NULL) {
+		free(str);
 
+	}
+}
 int str_length(String* str) {
 	if (str == NULL || str->list == NULL) {
 		return 0;
