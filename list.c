@@ -150,6 +150,33 @@ void list_insert(List * list, void * data, int index) {
 	return;
 }
 
+void list_insert_list(List * list, List * list2, int index) {
+	if (list2->head == NULL) {
+		return;
+	}
+	if (list->head == NULL || index >= list->size) {
+		list_append_list(list, list2);
+		return;
+	}
+	if (index < 0) {
+		index = 0;
+	}
+	if (index == 0) {
+		list2->tail->next = list->head;
+		list->head = list2->head;
+		list->size += list2->size;
+		return;
+	}
+	Node * current = getNode(list, index - 1);
+	if (current == NULL) {
+		list_append_list(list, list2);
+		return;
+	}
+	Node * next = current->next;
+	current->next = list2->head;
+	list2->tail->next = next;
+	list->size += list2->size;
+}
 //Function is used to list_remove a node at a given index, if the index is out of bounds or there is no node 
 //the function returns NULL, if succeeded the function returns the data of the list_removed node
 void * list_remove(List * list, int index) {
@@ -177,6 +204,112 @@ void * list_remove(List * list, int index) {
 	free(temp);
 	list->size--;
 	return data;
+}
+
+void list_slice(List * list, int start, int end) {
+	if (start < 0) {
+		start = 0;
+	}
+	if (end >= list->size) {
+		end = list->size - 1;
+	}
+	if (start >= end) {
+		return;
+	}
+	List * tempList = malloc_list();
+	//We need to get the node prior to the start and after the end
+	//If either are NULL we will have a empty list
+	if (start == 0) {
+		if (end < list->size - 1) {
+			tempList->head = list->head;
+			tempList->tail = getNode(list, end);
+			tempList->size = end + 1;
+			list->head = tempList->tail->next;
+			tempList->tail->next = NULL;
+			list->size -= tempList->size;
+		} else {
+			tempList->head = list->head;
+			tempList->tail = list->tail;
+			tempList->size = list->size;
+			list->head = NULL;
+			list->tail = NULL;
+			list->size = 0;
+		}
+	} else {
+		Node * startNode = getNode(list, start - 1);
+		if (startNode == NULL) {
+			return;
+		}
+		if (end < list->size - 1) {
+			tempList->head = startNode->next;
+			tempList->tail = getNode(list, end);
+			tempList->size = end - start + 1;
+			startNode->next = tempList->tail->next;
+			tempList->tail->next = NULL;
+			list->size -= tempList->size;
+		} else {
+			tempList->head = startNode->next;
+			tempList->tail = list->tail;
+			tempList->size = list->size - start;
+			startNode->next = NULL;
+			list->tail = startNode;
+			list->size -= tempList->size;
+		}
+	}
+	freeList(tempList);
+}
+
+void list_sliceA(List * list, int start, int end, void (*freeData)(void *)) {
+	if (start < 0) {
+		start = 0;
+	}
+	if (end >= list->size) {
+		end = list->size - 1;
+	}
+	if (start >= end) {
+		return;
+	}
+	List * tempList = malloc_list();
+	//We need to get the node prior to the start and after the end
+	//If either are NULL we will have a empty list
+	if (start == 0) {
+		if (end < list->size - 1) {
+			tempList->head = list->head;
+			tempList->tail = getNode(list, end);
+			tempList->size = end + 1;
+			list->head = tempList->tail->next;
+			tempList->tail->next = NULL;
+			list->size -= tempList->size;
+		} else {
+			tempList->head = list->head;
+			tempList->tail = list->tail;
+			tempList->size = list->size;
+			list->head = NULL;
+			list->tail = NULL;
+			list->size = 0;
+		}
+	} else {
+		Node * startNode = getNode(list, start - 1);
+		if (startNode == NULL) {
+			return;
+		}
+		if (end < list->size - 1) {
+			tempList->head = startNode->next;
+			tempList->tail = getNode(list, end);
+			tempList->size = end - start + 1;
+			startNode->next = tempList->tail->next;
+			tempList->tail->next = NULL;
+			list->size -= tempList->size;
+		} else {
+			tempList->head = startNode->next;
+			tempList->tail = list->tail;
+			tempList->size = list->size - start;
+			startNode->next = NULL;
+			list->tail = startNode;
+			list->size -= tempList->size;
+		}	
+	}
+	freeListA(tempList, freeData);
 }
 
 //Function is used to get the data of a node at a given index, if the index is out of bounds, the function
