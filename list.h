@@ -1,6 +1,7 @@
 #ifndef LIST_H
 #define LIST_H
 #pragma once
+
 typedef struct Node {
     void * data;
     struct Node* next;
@@ -18,7 +19,6 @@ void freeList(List * list);
 void freeListA(List * list, void (*freeData)(void *));
 void list_clear(List * list);
 void list_clearA(List * list, void (*freeData)(void *));
-List * list_copy(List * list);
 void list_append(List * list, void * data);
 void list_append_list(List * list, List * list2);
 void list_insert(List * list, void * data, int index);

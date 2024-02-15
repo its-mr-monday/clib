@@ -22,6 +22,10 @@ Node * malloc_node(void * data) {
 
 //Function frees a given node and its data
 void freeNode(Node * node) {
+	if (node == NULL) {
+		return;
+	}
+
 	if (node->next != NULL) {
 		freeNode(node->next);
 		node->next = NULL;
@@ -35,6 +39,9 @@ void freeNode(Node * node) {
 
 //Function frees a given node and its data, but uses a function pointer to free the data
 void freeNodeA(Node * node, void (*freeData)(void *)) {
+	if (node == NULL) {
+		return;
+	}
 	if (node->next != NULL) {
 		freeNodeA(node->next, freeData);
 		node->next = NULL;
@@ -109,20 +116,6 @@ void list_clearA(List * list, void (*freeData)(void *)) {
 	}
 	list->tail = NULL;
 	list->size = 0;
-}
-
-List * list_copy(List * list) {
-	List * newList = malloc_list();
-	Node * current = list->head;
-	while (current != NULL) {
-		void * data = current->data;
-		//Create a copy with the same value as the original
-		void * newData = malloc(sizeof(*data));
-		memcpy(newData, data, sizeof(*data));
-		list_append(newList, newData);
-		current = current->next;
-	}
-	return newList;
 }
 
 //Append function for list, adds a new node to the end of the list

@@ -252,13 +252,27 @@ int str_index_of_cstr(String* str, const char* cstr) {
 	return index;
 }
 char* str_to_cstr(String* str) {
+	//Do some NULL checks
+	if (str == NULL) {
+		return NULL;
+	}
 	if (str->list == NULL) {
 		return NULL;
 	}
+	if (str->list->head == NULL) {
+		return NULL;
+	}
+	if (str->list->head->data == NULL) {
+		return NULL;
+	}
+	//We know no NULL is
 	char * cstr = malloc(str->list->size + 1);
-	int i = 0;
 	Node * node = str->list->head;
 	while (node != NULL) {
+		if (node->data == NULL) {
+			cstr[i] = '\0';
+			return cstr;
+		}
 		char * ch = (char*)node->data;
 		cstr[i] = *ch;
 		node = node->next;
