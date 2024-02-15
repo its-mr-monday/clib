@@ -1,5 +1,4 @@
 #include "bintree.h"
-#include "str.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -138,46 +137,4 @@ BinTreeNode* tree_find(BinTree *tree, int data) {
 	}
 	return NULL;
 }
-
-//The return of this would be the total rows completed thus far
-int recursive_node_print(BinTreeNode * root, String * str, int row) {
-	if (root == NULL) {
-		return row;
-	}
-	int deepLeft, deepRight;
-	if (root->right != NULL) {
-		deepRight = recursive_node_print(root->right, str, row + 1);
-	} else {
-		deepRight = row;
-	}
-	if (root->left != NULL) {
-		deepLeft = recursive_node_print(root->left, str, row + 1);
-	} else {
-		deepLeft = row;
-	}
-	//We can now see how many rows are under this one
-	int deep = deepLeft > deepRight ? deepLeft : deepRight;
-	//Depth tells us how many spaces to add
-	string_insert_int(str, 0, root->data);
-	for (int i = 0; i < deep; i++) {
-		string_insert(str, 0, ' ');
-	}
-	
-	return deep;
-	
-}
-
-void tree_print(BinTree *tree) {
-	//This is a recursive function that constructs a string from str.h
-	String * str = malloc_string();
-	//we must now recursively build the string
-	recursive_node_print(tree->root, str, 0);
-	//print the string
-	char * cstr = string_to_cstr(str);
-	printf("%s\n", cstr);
-	//free the string
-	free(cstr);
-	free_string(str);
-}
-
 

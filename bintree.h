@@ -19,5 +19,4 @@ BinTreeNode* tree_getroot(BinTree *tree);
 void tree_add(BinTree *tree, int data);
 void tree_remove(BinTree *tree, int data);
 BinTreeNode* tree_find(BinTree *tree, int data);
-void tree_print(BinTree *tree);
 #endif
