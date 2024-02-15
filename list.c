@@ -7,6 +7,7 @@
 #include "list.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 void freeNode(Node * node);
 void freeNodeA(Node * node, void (*freeData)(void *));
@@ -91,6 +92,38 @@ Node * getNode(List * list, int index) {
 
 
 /* The following functions are defined by the header file to use the list */
+
+void list_clear(List * list) {
+	if (list->head != NULL) {
+		freeNode(list->head);
+		list->head = NULL;
+	}
+	list->tail = NULL;
+	list->size = 0;
+}
+
+void list_clearA(List * list, void (*freeData)(void *)) {
+	if (list->head != NULL) {
+		freeNodeA(list->head, freeData);
+		list->head = NULL;
+	}
+	list->tail = NULL;
+	list->size = 0;
+}
+
+List * list_copy(List * list) {
+	List * newList = malloc_list();
+	Node * current = list->head;
+	while (current != NULL) {
+		void * data = current->data;
+		//Create a copy with the same value as the original
+		void * newData = malloc(sizeof(*data));
+		memcpy(newData, data, sizeof(*data));
+		list_append(newList, newData);
+		current = current->next;
+	}
+	return newList;
+}
 
 //Append function for list, adds a new node to the end of the list
 void list_append(List * list, void * data) {
